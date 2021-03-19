@@ -52,30 +52,21 @@ class SuperCell:
         norm_vector = array([vector[0]/length,vector[1]/length,vector[2]/length])
 
         return norm_vector
-
+    
     def get_unit_cell_vectors_GMX(self, collinear_vector_length, plane_vector_length, free_vector_length, alpha, beta, gamma):
-
-        # works with GROMACS    
-        # collinear vector
-        collinear_vector = array([collinear_vector_length,0,0])
     
-        # find plane_vector
-        axis = array([0,0,1])
-        plane_vector = array([0,1,0])
-        angle = self.vector_angle(collinear_vector,array([0,0,0]),plane_vector) - gamma*(pi/180)
-        plane_vector = self.rotate(plane_vector, -axis, angle)
-        plane_vector = self.norm_vector(plane_vector)*plane_vector_length  
+        alpha = numpy.deg2rad(alpha)
+        beta  = numpy.deg2rad(beta)
+        gamma = numpy.deg2rad(gamma)
     
-        # find free_vector
-        free_vector = array([0,0,1])
-        angle = self.vector_angle(plane_vector, array([0,0,0]), free_vector) - alpha*(pi/180)
-        free_vector = self.rotate(free_vector, -collinear_vector, angle )
+        collinear_vector = numpy.array([collinear_vector_length,0,0])
     
-        angle = self.vector_angle(collinear_vector, array([0,0,0]), free_vector) - beta*(pi/180) 
-        axis = self.perpvector(collinear_vector, array([0,0,0]), free_vector)
-        free_vector = self.rotate(free_vector, axis, angle )
-        free_vector = self.norm_vector(free_vector)*free_vector_length
-
+        plane_vector = numpy.array([plane_vector_length*cos(gamma), plane_vector_length*sin(gamma), 0])
+    
+        free_vector     = numpy.array([free_vector_length*cos(beta),0 ,0])
+        free_vector[1]  = (free_vector_length * (cos(alpha) - cos(beta)*cos(gamma)))/(sin(gamma))
+        free_vector[2]  = sqrt(free_vector_length*free_vector_length - free_vector[0]*free_vector[0] - free_vector[1]*free_vector[1])
+    
         return collinear_vector, plane_vector, free_vector
 
     def fractional_to_cartesian(self, vector, lattice_a, lattice_b, lattice_c):
