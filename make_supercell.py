@@ -276,7 +276,7 @@ class SuperCell:
             atom_nr += 1
 
             if atom_nr == 100000:
-                print 'Warning atom numbers over 100K. Atom number will start over from 0'
+                print ('Warning atom numbers over 100K. Atom number will start over from 0')
                 atom_nr = 0
 
             f.write(LINE)
@@ -302,7 +302,7 @@ class SuperCell:
 
             atom_nr += 1
             if atom_nr == 100000:
-                print 'Warning atom numbers over 100K. Atom number will start over from 0'
+                print ('Warning atom numbers over 100K. Atom number will start over from 0')
                 atom_nr = 0
 
 
@@ -341,12 +341,12 @@ class SuperCell:
                 nanometer_atoms = self.aangstrom_to_nanometers(cartesian_supercellatoms)
                 self.write_gro(nanometer_atoms, newunitcell, self._output_file)
             else:
-                print 'Unrecognised format in ' + self._output_file
+                print ('Unrecognised format in ' + self._output_file)
 
         elif '.pdb' in self._intial_file:
             atoms, unitcell = self.read_pdb(self._intial_file)
         else:
-            print 'ERROR unrecognised file format! must be .cif or .pdb'
+            print ('ERROR unrecognised file format! must be .cif or .pdb')
             sys.exit(0)
         
 
